@@ -2,6 +2,7 @@
 #define __GRAPH_CORE__
 
 #include <bits/stdc++.h>
+#include <cmath>
 using namespace std;
 /**
  * An weighted graph edge.

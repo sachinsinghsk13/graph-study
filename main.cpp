@@ -15,9 +15,9 @@ int main() {
     add_edge(g, 4, 5, true);
     add_edge(g, 5, 3, true);
 
-    
-	vector<vector<int>> sccs = find_scc_kosaraju(g);
-    cout << "Strongly Connected Components (Brute Force):" << endl;
+
+	vector<vector<int>> sccs = find_scc_tarjans(g);
+    cout << "Strongly Connected Components:" << endl;
     for (const auto& scc : sccs) {
         cout << "{ ";
         for (int node : scc) {

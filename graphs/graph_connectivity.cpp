@@ -184,3 +184,50 @@ vector<vector<int>> find_scc_kosaraju(graph& graph) {
     }   
     return result;
 }
+
+static void dfs_tarjans(graph& g, int u, vector<int>& disc, vector<int>& low, vector<bool>& visited, stack<int>& stack, vector<bool>& onStack, int& time) {
+    visited[u] = true;
+    disc[u] = ++time;
+    low[u] = time;
+    onStack[u] = true;
+    stack.push(u);
+    for (auto it: g.at(u)) {
+        int v = it.first;
+        if (!visited[v]) {
+            dfs_tarjans(g, v, disc, low, visited, stack, onStack, time);
+            low[u] = min(low[u], low[v]);
+        } else if (onStack[v]) {
+            low[u] = min(low[u], disc[v]);
+        }
+    }
+    onStack[u] = false;
+    if (disc[u] == low[u]) {
+        // only print the ssc for now.
+        cout << "{ ";
+        while (!stack.empty()) {
+            int top = stack.top();
+            cout << top << " ";
+            stack.pop();
+            if (top == u) {
+                break;
+            }
+        }
+        cout << " }" << endl;
+    }
+}
+
+vector<vector<int>> find_scc_tarjans(graph& graph) {
+    int n = graph.size();
+    vector<bool> visited(n, false);
+    vector<int> disc(n, -1), low(n, -1);
+    vector<bool> onStack(n, false);
+    stack<int> stack;
+    vector<vector<int>> result;
+    int time = 0;
+    for (int i = 0; i < n; i++) {
+        if (!visited[i]) {
+            dfs_tarjans(graph, i, disc, low, visited, stack, onStack, time);
+        }
+    }
+    return result;
+}
