@@ -5,7 +5,7 @@
 
 vector<int> graph_dfs(graph &graph, int start_vertex);
 vector<int> graph_bfs(graph &graph, int start_vertex);
-
+pair<vector<int>, vector<int>> dfs_with_time(graph& graph);
 
 bool is_bipartite_graph(graph &graph);
 
