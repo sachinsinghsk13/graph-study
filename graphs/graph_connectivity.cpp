@@ -127,3 +127,60 @@ static bool has_path(graph& graph, int src, int dest) {
     vector<bool> visited(graph.size(), false);
     return dfs_check_reachability(graph, src, dest, visited);
 }
+
+static void _dfs_finish_time(graph& g, int u, stack<pair<int, int>>& fin, vector<bool>& visited, int& time) {
+    visited[u] = true;
+    time = time + 1;
+    // can be used to store discovery time here.
+    for (auto neighbour : g.at(u)) {
+        int v = neighbour.first;
+        if (!visited[v]) {
+            _dfs_finish_time(g, v, fin, visited, time);
+        }
+    }
+    time = time + 1;
+    fin.push({u, time});
+}
+
+static stack<pair<int, int>> dfs_finish_time(graph& g, int u) {
+    stack<pair<int, int>> finish_time;
+    vector<bool> visited(g.size(), false);
+    int time = 0;
+    for (int u = 0; u < g.size(); u++) {
+        if (!visited[u]) {
+            _dfs_finish_time(g, u, finish_time, visited, time);
+        }
+    }
+    return finish_time;
+}
+
+static void dfs_collect_scc(graph& g, int u, vector<bool>& visited, vector<int>& scc) {
+    visited[u] = true;
+    scc.push_back(u);
+    for (auto neighbour: g.at(u)) {
+        int v = neighbour.first;
+        if (!visited[v]) {
+            dfs_collect_scc(g, v, visited, scc);
+        }
+    }
+}
+
+vector<vector<int>> find_scc_kosaraju(graph& graph) {
+    int n = graph.size();
+    vector<vector<int>> result;
+    stack<pair<int, int>> fin = dfs_finish_time(graph, 0);
+    vector<bool> visited(n, false);
+    auto trn_graph = transpose(graph);
+    while (!fin.empty()) {
+        pair<int, int> top = fin.top();
+        fin.pop();
+        int u = top.first;
+        int time = top.second;
+        if (!visited[u]) {
+            vector<int> scc;
+            dfs_collect_scc(trn_graph, u, visited, scc);
+            result.push_back(scc);
+        }
+    }   
+    return result;
+}

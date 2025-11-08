@@ -66,4 +66,6 @@ void add_edge(graph &graph, int src, int dest, int weight, bool directed);
 // Visualize the graph
 void print_graph(graph &graph);
 
+graph transpose(graph& graph);
+
 #endif

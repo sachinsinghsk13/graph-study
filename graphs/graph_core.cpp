@@ -57,3 +57,16 @@ void print_graph(graph &graph) {
         cout << endl;
     }
 }
+
+graph transpose(graph& original_graph) {
+    int n = original_graph.size();
+    auto transpose_graph = build_graph(n);
+    for (int i = 0; i < n; i++) {
+        for (auto neighbour : original_graph.at(i)) {
+            int v = neighbour.first;
+            int w = neighbour.second;
+            add_edge(transpose_graph, v, i,w, true);
+        }
+    }
+    return transpose_graph;
+}
