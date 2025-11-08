@@ -3,7 +3,7 @@ clear
 
 EXEC="main.out"
 echo "Compiling your code..."
-g++ -std=c++17 -Wall main.cpp */*.cpp -o "$EXEC"
+g++ main.cpp */*.cpp -o "$EXEC"
 echo "Compilation completed..."
 echo ""
 echo ""
