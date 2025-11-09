@@ -285,3 +285,52 @@ vector<edge> find_bridges_tarjans(graph& graph) {
     }
     return result;
 }
+
+static void dfs_find_articulation_point(graph &g, int u, int p, vector<int> &disc, vector<int> &low, vector<bool> &visited, vector<bool> &in_stack, vector<int>& is_ap, int &time) {
+
+    visited[u] = true;
+    disc[u] = low[u] = ++time;
+    in_stack[u] = true;
+    int children = 0;                
+    for (pair<int, int> neighbour : g[u]) {
+        int v = neighbour.first;
+        if (!visited[v]) {
+            dfs_find_articulation_point(g, v, u, disc, low, visited, in_stack, is_ap, time);
+            low[u] = min(low[u], low[v]);
+            children++;
+        } else if (in_stack[v]) {
+            low[u] = min(low[u], disc[v]);
+        }
+          // check if u is non root node and has a child v that has no back edge to u and it's ancestors.
+        if (p != -1 && low[v] >= disc[u]) {
+            is_ap[u] = true;
+        }
+    }
+    
+    // check if u is root node and has two or more children.
+    if (p == -1 && children > 1) {
+        is_ap[u] = true;
+    }
+
+    in_stack[u] = false;
+}
+
+vector<int> find_articulation_points_tarjans(graph& graph) {
+    int n = graph.size();
+    vector<int> disc(n, 0), low(n, 0), result, is_ap(n, false);
+    vector<bool> visited(n, false), in_stack(n, false);
+    int time = 0;
+    for (int u = 0; u < n; u++) {
+        if (!visited[u]) {
+            dfs_find_articulation_point(graph, u, -1, disc, low, visited, in_stack, is_ap, time);
+        }
+    }
+
+    for (int i = 0; i < n; i++) {
+        if (is_ap[i]) {
+            result.push_back(i);
+        }
+    }
+
+    return result;
+}
