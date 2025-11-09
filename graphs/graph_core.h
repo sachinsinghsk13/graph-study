@@ -57,12 +57,13 @@ void add_edge(graph &graph, int src, int dest, int weight);
  */
 void add_edge(graph &graph, int src, int dest, bool directed);
 
-
-
 /**
  * Adds an weighted edge directed or undirected based on directed parameter
  */
 void add_edge(graph &graph, int src, int dest, int weight, bool directed);
+
+void remove_edge(graph& graph, int src, int dest);
+void remove_edge(graph& graph, int src, int dest, bool directed);
 
 // Visualize the graph
 void print_graph(graph &graph);

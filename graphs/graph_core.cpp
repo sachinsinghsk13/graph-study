@@ -70,3 +70,28 @@ graph transpose(graph& original_graph) {
     }
     return transpose_graph;
 }
+
+
+void remove_edge(graph& graph, int src, int dest) {
+    remove_edge(graph, src, dest, false);
+}
+
+void remove_edge(graph& graph, int src, int dest, bool directed) {
+    vector<pair<int, int>>& src_list = graph.at(src);
+    auto it = find_if(src_list.begin(), src_list.end(), [dest](const pair<int, int>& p) {
+        return p.first == dest;
+    });
+    if (it != src_list.end()) {
+        src_list.erase(it);
+    }
+
+    if (!directed) {
+        vector<pair<int, int>>& dest_list = graph.at(dest);
+        auto it = find_if(dest_list.begin(), dest_list.end(), [src](const pair<int, int>& p) {
+            return p.first == src;
+        });
+        if (it != dest_list.end()) {
+            dest_list.erase(it);
+        }
+    }
+}

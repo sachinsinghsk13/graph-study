@@ -6,25 +6,15 @@
 using namespace std;
 
 int main() {
-	graph g(6);
-    add_edge(g, 0, 1, true);
-    add_edge(g, 0, 3, true);	
-    add_edge(g, 1, 2, true);
-    add_edge(g, 2, 0, true);
-    add_edge(g, 3, 4, true);
-    add_edge(g, 4, 5, true);
-    add_edge(g, 5, 3, true);
-
-
-	vector<vector<int>> sccs = find_scc_tarjans(g);
-    cout << "Strongly Connected Components:" << endl;
-    for (const auto& scc : sccs) {
-        cout << "{ ";
-        for (int node : scc) {
-            cout << node << " ";
-        }
-        cout << "}" << endl;
-    }
+	graph g(5);
+	add_edge(g, 0, 1);
+	add_edge(g, 1, 2);
+	add_edge(g, 2, 0);
+	add_edge(g, 0, 3);
+	add_edge(g, 3, 4);
+	vector<edge> x = find_bridges_tarjans(g);
+	for (edge& i: x) {
+		cout << i.source << " -> " << i.destination << endl;
+	}
 	return 0;
 }
-

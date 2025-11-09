@@ -231,3 +231,57 @@ vector<vector<int>> find_scc_tarjans(graph& graph) {
     }
     return result;
 }
+
+vector<edge> find_bridges_brute_force(graph& graph) {
+    // convert adjacency list to edge list.
+    vector<edge> edge_list = get_edge_list(graph, false);
+    vector<edge> result;
+    for (int i = 0; i < edge_list.size(); i++) {
+        edge &e = edge_list.at(i);
+        remove_edge(graph, e.source, e.destination);
+        int count = count_component(graph);
+        if (count > 1) {
+            result.push_back(e);
+        }
+        add_edge(graph, e.source, e.destination);
+    }
+    return result;
+}
+
+static void dfs_find_bridges(graph& g,int u, vector<int>& parent, vector<int>& disc, vector<int>& low, vector<bool>& visited,vector<bool> inStack, int& time, vector<edge>& bridges) {
+    visited[u] = true;
+    disc[u] = ++time;
+    low[u] = time;
+    inStack[u] = true;
+    for (pair<int, int>& it : g.at(u)) {
+        int v = it.first;
+        if (!visited[v]) {
+            parent[v] = u;
+            dfs_find_bridges(g, v, parent, disc, low, visited, inStack, time, bridges);
+            low[u] = min(low[u], low[v]);
+        } else if (inStack[v] && parent[u] != v) {
+            low[u] = min(low[u], disc[v]);
+        }
+        // check that if this edge u -> v is a bridge
+        if (low[v] > disc[u]) {
+            edge bridge = {u, v, it.second};
+            bridges.push_back(bridge);
+        }
+    }
+    inStack[u] = false;
+}
+
+vector<edge> find_bridges_tarjans(graph& graph) {
+    int n = graph.size();
+    vector<edge> result;
+    vector<int> parent(n, -1), disc(n, 0), low(n, 0);
+    vector<bool> visited(n, false);
+    vector<bool> inStack(n, false);
+    int time = 0;
+    for (int i = 0; i < n; i++) {
+        if (!visited[i]) {
+            dfs_find_bridges(graph, i, parent, disc, low, visited, inStack, time, result);
+        }
+    }
+    return result;
+}
