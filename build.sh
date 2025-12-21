@@ -4,7 +4,7 @@
 clear
 
 # Compile all source files with debug symbols
-g++ -std=c++17 -g main.cpp graphs/*.cpp -o main.out
+g++ -std=c++17 -g main.cpp */*.cpp -o main.out
 
 if [ $? -eq 0 ]; then
     echo "Compilation successful!"

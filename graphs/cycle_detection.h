@@ -4,6 +4,5 @@
 
 bool has_cycle_undirected_bfs(graph &graph);
 bool has_cycle_undirected_dfs(graph &graph);
-bool has_cycle_directed(graph &graph);
 
 #endif

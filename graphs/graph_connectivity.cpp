@@ -142,11 +142,11 @@ static void _dfs_finish_time(graph& g, int u, stack<pair<int, int>>& fin, vector
     fin.push({u, time});
 }
 
-static stack<pair<int, int>> dfs_finish_time(graph& g, int u) {
+static stack<pair<int, int>> dfs_finish_time(graph& g) {
     stack<pair<int, int>> finish_time;
     vector<bool> visited(g.size(), false);
     int time = 0;
-    for (int u = 0; u < g.size(); u++) {
+    for (size_t u = 0; u < g.size(); u++) {
         if (!visited[u]) {
             _dfs_finish_time(g, u, finish_time, visited, time);
         }
@@ -168,14 +168,13 @@ static void dfs_collect_scc(graph& g, int u, vector<bool>& visited, vector<int>&
 vector<vector<int>> find_scc_kosaraju(graph& graph) {
     int n = graph.size();
     vector<vector<int>> result;
-    stack<pair<int, int>> fin = dfs_finish_time(graph, 0);
+    stack<pair<int, int>> fin = dfs_finish_time(graph);
     vector<bool> visited(n, false);
     auto trn_graph = transpose(graph);
     while (!fin.empty()) {
         pair<int, int> top = fin.top();
         fin.pop();
         int u = top.first;
-        int time = top.second;
         if (!visited[u]) {
             vector<int> scc;
             dfs_collect_scc(trn_graph, u, visited, scc);
@@ -236,7 +235,7 @@ vector<edge> find_bridges_brute_force(graph& graph) {
     // convert adjacency list to edge list.
     vector<edge> edge_list = get_edge_list(graph, false);
     vector<edge> result;
-    for (int i = 0; i < edge_list.size(); i++) {
+    for (size_t i = 0; i < edge_list.size(); i++) {
         edge &e = edge_list.at(i);
         remove_edge(graph, e.source, e.destination);
         int count = count_component(graph);

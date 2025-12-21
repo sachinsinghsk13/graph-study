@@ -47,7 +47,3 @@ static bool check_cycle(graph &graph, int u, vector<bool> &visited, int parent) 
     }
     return false;
 }
-
-bool has_cycle_directed(graph &graph) {
-    return true;
-}
