@@ -6,7 +6,13 @@ using namespace std;
 
 
 int main() {
-	unordered_map<int, int> m;
+	string start = "abcv";
+	string target = "ebad";
+	vector<string> words = {
+		"abcd", "ebad", "ebcd", "xyza"
+	};
 	
+	int result = word_ladder(start, target, words);
+	cout << "Result = " << result << endl;
 	return 0;
 }
