@@ -6,7 +6,7 @@ using namespace std;
 
 
 int main() {
-	unordered_map<int, int> m;
-	
+	int steps = water_jug(8, 56, 46);
+	cout << "result : " << steps << endl;
 	return 0;
 }

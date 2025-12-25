@@ -4,4 +4,5 @@
 
 int rotten_oranges(vector<vector<int>> &matrix);
 int snakes_and_ladders(int n, vector<int> array);
+int water_jug(int m, int n, int d);
 #endif

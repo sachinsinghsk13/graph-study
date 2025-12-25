@@ -110,3 +110,64 @@ int snakes_and_ladders(int n, vector<int> array) {
     }
     return min;
 }
+
+vector<pair<int, int>> get_posible_states(int j1, int j2, int m, int n) {
+    vector<pair<int, int>> result;
+    // empty the jugs
+    if (j1 > 0) {
+        result.push_back({0, j2});
+    }
+    if (j2 > 0) {
+        result.push_back({j1, 0});
+    }
+    // fill the empty jugs
+    if (j1 == 0) {
+        result.push_back({m, j2});
+    }
+    
+    if (j2 == 0) {
+        result.push_back({j1, n});
+    }
+    // transfer to other jugs
+    int tc1 = m - j1;
+    int tc2 = n - j2;
+    if (j1 > 0 && tc2 > 0) {
+        int x = min(j1, tc2);
+        int _j1 = j1 - x;
+        int _j2 = j2 + x;
+        result.push_back({_j1, _j2});
+    }
+    if (j2 > 0 && tc1 > 0) {
+        int x = min(j2, tc1);
+        int _j2 = j2 - x;
+        int _j1 = j1 + x;
+        result.push_back({_j1, _j2});
+    }
+    return result;
+}
+
+int water_jug(int m, int n, int d) {
+    vector<vector<int>> visited(m + 1, vector<int>(n + 1, false));
+    queue<pair<pair<int, int>, int>> q;
+    q.push({{0, 0}, 0});
+    visited[0][0] = true;
+
+    while (!q.empty()) {
+        pair<int, int> curr = q.front().first;
+        int j1 = curr.first, j2 = curr.second;
+        int count = q.front().second;
+        q.pop();
+        // check if one the jugs is containing the required capacity.
+        if (curr.first == d || curr.second == d) return count;
+
+        for (pair<int, int> state: get_posible_states(j1, j2, m, n)) {
+            int x1 = state.first;
+            int x2 = state.second;
+            if (!visited[x1][x2]) {
+                q.push({{x1, x2}, count + 1});
+                visited[x1][x2] = true;
+            }
+        }
+    }
+    return -1;
+}
