@@ -3,10 +3,7 @@
 #include "graphs/graph_problems.h"
 using namespace std;
 
-
-
-int main() {
-	int steps = water_jug(8, 56, 46);
-	cout << "result : " << steps << endl;
+int main()
+{
 	return 0;
 }
