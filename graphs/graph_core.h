@@ -70,4 +70,6 @@ void print_graph(graph &graph);
 
 graph transpose(graph& graph);
 
+graph complement(const graph& graph);
+
 #endif

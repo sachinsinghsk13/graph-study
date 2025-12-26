@@ -51,9 +51,9 @@ void add_edge(graph &graph, int src, int dest, int weight, bool directed) {
 
 void print_graph(graph &graph) {
     for (size_t i = 0; i < graph.size(); i++) {
-        cout << i << ": ";
+        cout << i << ": ==> ";
         for (pair<int, int> neighbor : graph[i])
-            cout << neighbor.first << "(" << neighbor.second << ")";
+            cout << neighbor.first << "(w=" << neighbor.second << ") , ";
         cout << endl;
     }
 }
@@ -94,4 +94,34 @@ void remove_edge(graph& graph, int src, int dest, bool directed) {
             dest_list.erase(it);
         }
     }
+}
+
+/**
+ * @brief 
+ * 
+ * @param og Original Graph
+ * @return Complement of the given graph
+ */
+graph complement(const graph &og) {
+    int V = og.size();
+    graph cg = build_graph(V);
+
+    vector<vector<bool>> has_edge(V, vector<bool>(V, false));
+
+    for (int i = 0; i < V; i++) {
+        for (pair<int, int> p : og[i]) {
+            int j = p.first;
+            has_edge[i][j] = true;
+            has_edge[j][i] = true;
+        }
+    }
+
+    for (int i = 0; i < V; i++) {
+        for (int j = i + 1; j < V; j++) {
+          if (!has_edge[i][j]) {
+            add_edge(cg, i, j);
+          }
+        }
+    }
+    return cg;
 }
